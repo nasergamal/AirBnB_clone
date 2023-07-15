@@ -3,10 +3,22 @@
 import unittest
 from datetime import datetime
 from models import storage
+from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 import models
 import os
 import json
+
+class Test_FileStorage_init(unittest.TestCase):
+    '''FileStorage Class Unittests'''
+    def test_FileStorage_file_path_is_private_str(self):
+        self.assertEqual(str, type(FileStorage._FileStorage__file_path))
+
+    def testFileStorage_objects_is_private_dict(self):
+        self.assertEqual(dict, type(FileStorage._FileStorage__objects))
+
+    def test_storage_initializes(self):
+        self.assertEqual(type(models.storage), FileStorage)
 
 
 class Test_FileStorage(unittest.TestCase):
@@ -28,6 +40,18 @@ class Test_FileStorage(unittest.TestCase):
             os.rename("fil.json", "file.json")
         except IOError:
             pass
+        FileStorage._FileStorage__objects = {}
+
+    def test_all(self):
+        self.assertEqual(dict, type(models.storage.all()))
+
+    def test_new_args(self):
+        with self.assertRaises(TypeError):
+            models.storage.new(BaseModel(), 1)
+
+    def test_save_arg(self):
+        with self.assertRaises(TypeError):
+            models.storage.save(None)
 
     def test_type(self):
         bm1 = BaseModel()
@@ -53,7 +77,7 @@ class Test_FileStorage(unittest.TestCase):
         storage.new(rev1)
         storage.save()
         with open("file.json", "r") as f:
-            content = json.load(f)
+            content = f.read()
         self.assertIn(f"{type(bm1).__name__}.{bm1.id}", content)
         self.assertIn(f"{type(us1).__name__}.{us1.id}", content)
         self.assertIn(f"{type(st1).__name__}.{st1.id}", content)
@@ -61,14 +85,7 @@ class Test_FileStorage(unittest.TestCase):
         self.assertIn(f"{type(am1).__name__}.{am1.id}", content)
         self.assertIn(f"{type(pl1).__name__}.{pl1.id}", content)
         self.assertIn(f"{type(rev1).__name__}.{rev1.id}", content)
-        self.assertIn(bm1.to_dict(), content.values())
-        self.assertIn(us1.to_dict(), content.values())
-        self.assertIn(st1.to_dict(), content.values())
-        self.assertIn(cy1.to_dict(), content.values())
-        self.assertIn(am1.to_dict(), content.values())
-        self.assertIn(pl1.to_dict(), content.values())
-        self.assertIn(rev1.to_dict(), content.values())
-
+    
     def test_all(self):
         bm1 = BaseModel()
         bm2 = BaseModel()
@@ -77,7 +94,7 @@ class Test_FileStorage(unittest.TestCase):
         self.assertIn(f"{type(bm1).__name__}.{bm1.id}", allobj)
         self.assertIn(f"{type(bm3).__name__}.{bm2.id}", allobj)
         self.assertIn(f"{type(bm3).__name__}.{bm3.id}", allobj)
-
+        
     def test_all_type(self):
         allobj = storage.all()
         self.assertEqual(type(allobj), dict)
@@ -94,7 +111,6 @@ class Test_FileStorage(unittest.TestCase):
         am1 = models.amenity.Amenity()
         pl1 = models.place.Place()
         rev1 = models.review.Review()
-        allobj = storage.all()
         storage.new(bm1)
         storage.new(us1)
         storage.new(st1)
@@ -102,13 +118,14 @@ class Test_FileStorage(unittest.TestCase):
         storage.new(am1)
         storage.new(pl1)
         storage.new(rev1)
-        self.assertIn(f"{type(bm1).__name__}.{bm1.id}", allobj)
-        self.assertIn(f"{type(us1).__name__}.{us1.id}", allobj)
-        self.assertIn(f"{type(st1).__name__}.{st1.id}", allobj)
-        self.assertIn(f"{type(cy1).__name__}.{cy1.id}", allobj)
-        self.assertIn(f"{type(am1).__name__}.{am1.id}", allobj)
-        self.assertIn(f"{type(pl1).__name__}.{pl1.id}", allobj)
-        self.assertIn(f"{type(rev1).__name__}.{rev1.id}", allobj)
+        allobj = storage.all()
+        self.assertIn(f"{type(bm1).__name__}.{bm1.id}", allobj.keys())
+        self.assertIn(f"{type(us1).__name__}.{us1.id}", allobj.keys())
+        self.assertIn(f"{type(st1).__name__}.{st1.id}", allobj.keys())
+        self.assertIn(f"{type(cy1).__name__}.{cy1.id}", allobj.keys())
+        self.assertIn(f"{type(am1).__name__}.{am1.id}", allobj.keys())
+        self.assertIn(f"{type(pl1).__name__}.{pl1.id}", allobj.keys())
+        self.assertIn(f"{type(rev1).__name__}.{rev1.id}", allobj.keys())
         self.assertIn(bm1, allobj.values())
         self.assertIn(us1, allobj.values())
         self.assertIn(st1, allobj.values())

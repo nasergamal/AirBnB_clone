@@ -14,26 +14,31 @@ class Test_BaseModelinit(unittest.TestCase):
         bm2 = BaseModel()
         self.assertIsInstance(bm1, BaseModel)
         self.assertTrue(hasattr(bm1, "id"))
+    
+    def test_unique_id(self):
+        bm1 = BaseModel()
+        bm2 = BaseModel()
         self.assertNotEqual(bm1.id, bm2.id)
         self.assertIsInstance(bm1.id, str)
 
     def test_types(self):
         bm1 = BaseModel()
+        self.assertEqual(BaseModel, type(BaseModel()))
         self.assertIsInstance(bm1.id, str)
         self.assertIsInstance(bm1.created_at, datetime)
         self.assertIsInstance(bm1.updated_at, datetime)
-
+        
     def test_creation_timedif(self):
         bm1 = BaseModel()
         sleep(0.01)
         bm2 = BaseModel()
-        self.assertNotEqual(bm1.created_at, bm2.created_at)
+        self.assertLess(bm1.created_at, bm2.created_at)
 
     def test_update_timedif(self):
         bm1 = BaseModel()
         sleep(0.01)
         bm2 = BaseModel()
-        self.assertNotEqual(bm1.updated_at, bm2.updated_at)
+        self.assertLess(bm1.updated_at, bm2.updated_at)
 
     def test_created_at(self):
         bm1 = BaseModel()

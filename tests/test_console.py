@@ -40,7 +40,7 @@ class Test_console_basics(unittest.TestCase):
             self.assertEqual(c, f.getvalue().strip())
 
     def test_help_all(self):
-        c = "Close file"
+        c = "show all instance of required class"
         with patch('sys.stdout', new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help all"))
             self.assertEqual(c, f.getvalue().strip())
