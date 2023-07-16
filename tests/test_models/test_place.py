@@ -26,7 +26,7 @@ class Test_Placeinit(unittest.TestCase):
 
     def test_number_rooms_is_int(self):
         self.assertEqual(int, type(Place.number_rooms))
-    
+
     def test_number_bathrooms_is_int(self):
         self.assertEqual(int, type(Place.number_bathrooms))
 

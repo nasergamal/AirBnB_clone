@@ -9,6 +9,7 @@ import models
 import os
 import json
 
+
 class Test_FileStorage_init(unittest.TestCase):
     '''FileStorage Class Unittests'''
     def test_FileStorage_file_path_is_private_str(self):
@@ -85,7 +86,7 @@ class Test_FileStorage(unittest.TestCase):
         self.assertIn(f"{type(am1).__name__}.{am1.id}", content)
         self.assertIn(f"{type(pl1).__name__}.{pl1.id}", content)
         self.assertIn(f"{type(rev1).__name__}.{rev1.id}", content)
-    
+
     def test_all(self):
         bm1 = BaseModel()
         bm2 = BaseModel()
@@ -94,7 +95,7 @@ class Test_FileStorage(unittest.TestCase):
         self.assertIn(f"{type(bm1).__name__}.{bm1.id}", allobj)
         self.assertIn(f"{type(bm3).__name__}.{bm2.id}", allobj)
         self.assertIn(f"{type(bm3).__name__}.{bm3.id}", allobj)
-        
+
     def test_all_type(self):
         allobj = storage.all()
         self.assertEqual(type(allobj), dict)

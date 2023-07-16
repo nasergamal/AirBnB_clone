@@ -64,7 +64,7 @@ class FileStorage:
             return True
         return False
 
-    def getall(self, arg):
+    def getall(self, arg=""):
         '''return a list of all instances in a class'''
         li = []
         for k, v in FileStorage.__objects.items():

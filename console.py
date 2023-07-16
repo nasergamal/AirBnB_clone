@@ -105,9 +105,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         '''show all instance of required class'''
-        if not arg:
-            print("** class name missing **")
-        elif arg not in HBNBCommand.ms:
+        if arg and arg not in HBNBCommand.ms:
             print("** class doesn't exist **")
         else:
             li = storage.getall(arg)

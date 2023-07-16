@@ -14,7 +14,7 @@ class Test_BaseModelinit(unittest.TestCase):
         bm2 = BaseModel()
         self.assertIsInstance(bm1, BaseModel)
         self.assertTrue(hasattr(bm1, "id"))
-    
+
     def test_unique_id(self):
         bm1 = BaseModel()
         bm2 = BaseModel()
@@ -27,7 +27,7 @@ class Test_BaseModelinit(unittest.TestCase):
         self.assertIsInstance(bm1.id, str)
         self.assertIsInstance(bm1.created_at, datetime)
         self.assertIsInstance(bm1.updated_at, datetime)
-        
+
     def test_creation_timedif(self):
         bm1 = BaseModel()
         sleep(0.01)
